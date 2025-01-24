@@ -27,6 +27,7 @@ echo ""
 # 函数：记录日志并显示提示信息
 log_and_echo() {
     local message="$1"
+    echo "$message"  # 直接输出到终端
     echo "$message" | tee -a "$LOG_FILE"
 }
 
