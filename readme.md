@@ -1,11 +1,11 @@
-# Download APA Reproducible Package
+# 一、下载代码
 
 ```bash
 git clone https://github.com/DodgeHo/01_polyAseq_py27.git
 cd 01_polyAseq_py27 # 进入代码文件夹
 ```
 
-# Prerequisite
+# 二、环境与安装
 
 ## 1. 安装 Python 2.7、Conda 与 pip（如果尚未安装）
 使用 Python 2.7 运行本软件：
@@ -23,17 +23,13 @@ curl https://bootstrap.pypa.io/pip/2.7/get-pip.py --output get-pip.py
 sudo python2 get-pip.py
 ```
 
-## 5. 创建并激活conda环境
+## 2. 创建并激活conda环境
 
 ```bash
-# 赋予执行权限并运行安装脚本
-conda env remove -n bioinfo27
+conda env remove -n bioinfo27 # 确保没有同名环境
 conda create -n bioinfo27 python=2.7 -y
 conda activate bioinfo27
 ```
-
-# PolyA-seq Data
-
 
 ## 3. 使用安装脚本安装其他依赖项
 
@@ -45,9 +41,9 @@ chmod +x 00_setup_polyaseq.sh
 bash ./00_setup_polyaseq.sh
 ```
 
-# PolyA-seq Data Processing
+# 三、PolyA-seq Data Processing
 
-## 4. 运行脚本 1 准备资源
+## 1. 运行脚本 1 准备资源
 
 ```bash
 bash ./01_resource_prep.sh
