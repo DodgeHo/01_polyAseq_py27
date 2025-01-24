@@ -7,29 +7,35 @@ cd 01_polyAseq_py27 # 进入代码文件夹
 
 # Prerequisite
 
-## 0. 安装 Python 2.7、Conda 与 pip2（如果尚未安装）
-
+## 1. 安装 Python 2.7、Conda 与 pip（如果尚未安装）
 使用 Python 2.7 运行本软件：
-
 ```bash
-# 下载 Miniconda（Python 2.7 版本）
+# 下载 Miniconda（Python 2.7 版本） 赋予执行权限后安装
 wget https://repo.anaconda.com/miniconda/Miniconda2-latest-Linux-x86_64.sh
-
-# 赋予执行权限
 chmod +x Miniconda2-latest-Linux-x86_64.sh
-
-# 安装 Miniconda
 ./Miniconda2-latest-Linux-x86_64.sh -b -f -p /usr/local
 
 # 安装 Python 2.7（如果尚未安装）
 sudo apt install python2
 
-# 安装 pip for Python 2.7
+# 安装 pip for Python 2.7（如果尚未安装）
 curl https://bootstrap.pypa.io/pip/2.7/get-pip.py --output get-pip.py
 sudo python2 get-pip.py
 ```
 
-## 1. 使用安装脚本安装其他依赖项
+## 5. 创建并激活conda环境
+
+```bash
+# 赋予执行权限并运行安装脚本
+conda env remove -n bioinfo27
+conda create -n bioinfo27 python=2.7 -y
+conda activate bioinfo27
+```
+
+# PolyA-seq Data
+
+
+## 3. 使用安装脚本安装其他依赖项
 
 确保当前位于 `01_polyAseq_py27` 文件夹中：
 
@@ -41,13 +47,13 @@ bash ./00_setup_polyaseq.sh
 
 # PolyA-seq Data Processing
 
-## 2. 运行脚本 1 准备资源
+## 4. 运行脚本 1 准备资源
 
 ```bash
 bash ./01_resource_prep.sh
 ```
 
-## 3. 运行脚本 2 下载 PolyA-seq FASTQ 文件
+## 2. 运行脚本 2 下载 PolyA-seq FASTQ 文件
 
 ```bash
 bash ./02_get_fastq.sh
@@ -69,13 +75,13 @@ bash ./02_get_fastq.sh
 srrs=(SRR4091084)
 ```
 
-## 4. 运行 PolyA-seq 处理流程（脚本 3）
+## 3. 运行 PolyA-seq 处理流程（脚本 3）
 
 ```bash
 bash ./03_polyaseq.sh
 ```
 
-## 5. 转录因子结合分析
+## 4. 转录因子结合分析
 
 在 polyA 位点之间的基因组区域进行转录因子结合分析：
 
@@ -83,7 +89,7 @@ bash ./03_polyaseq.sh
 Rscript ./04_enrich_perms_100k_select.r
 ```
 
-## 6. 绘制高度富集的转录因子的序列标识图
+## 5. 绘制高度富集的转录因子的序列标识图
 
 ```bash
 Rscript ./05_plot_seqlogos.r

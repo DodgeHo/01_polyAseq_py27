@@ -11,60 +11,30 @@ LOG_FILE="setup_polyaseq_env.log"
 # 清空日志文件
 > "$LOG_FILE"
 
+log_and_echo() {
+    local message="$1"
+    echo "$message"  # 直接输出到终端
+    echo "$message" >> "$LOG_FILE"  # 同时记录到日志文件
+
+}
+
 # 提示信息
 echo "============================================"
 echo "  Bioinfo 环境设置脚本"
 echo "  本脚本将完成以下操作："
-echo "  1. 初始化 Conda"
-echo "  2. 创建或更新 Conda 环境（bioinfo27）"
-echo "  3. 安装 Python 和 R 的扩展包"
-echo "  4. 配置环境变量"
-echo "  5. 修改项目配置文件路径"
+echo "  1. 安装 PIP 扩展包"
+echo "  2. 安装 Conda 扩展包"
+echo "  3. 安装 R 语言和扩展包"
+echo "  4. 安装其他程序"
+echo "  5. 配置环境变量"
+echo "  6. 修改项目配置文件路径"
 echo "  日志文件: $LOG_FILE"
 echo "============================================"
 echo ""
 
-# 函数：记录日志并显示提示信息
-log_and_echo() {
-    local message="$1"
-    echo "$message"  # 直接输出到终端
-    echo "$message" | tee -a "$LOG_FILE"
-}
-
-# 2. 设置 Conda 环境
+# 1. 安装 PIP 扩展包
 log_and_echo ""
-log_and_echo "=== 2. 设置 Conda 环境 ==="
-
-# 检查环境是否存在
-if conda env list | grep -q "bioinfo27"; then
-    log_and_echo "环境 'bioinfo27' 已存在，正在删除..."
-    conda env remove -n bioinfo27 >> "$LOG_FILE" 2>&1
-    log_and_echo "环境 'bioinfo27' 已删除。"
-else
-    log_and_echo "环境 'bioinfo27' 不存在。"
-fi
-
-# 创建新的环境
-log_and_echo "正在创建环境 'bioinfo27'..."
-conda create -n bioinfo27 python=2.7 -y >> "$LOG_FILE" 2>&1
-if [ $? -eq 0 ]; then
-    log_and_echo "环境 'bioinfo27' 创建成功。"
-else
-    log_and_echo "环境创建失败，请检查 Conda 是否安装正确。"
-    exit 1
-fi
-
-# 激活环境
-log_and_echo "激活环境 'bioinfo27'..."
-conda activate bioinfo27 >> "$LOG_FILE" 2>&1
-if [ $? -ne 0 ]; then
-    log_and_echo "环境激活失败，请检查 Conda 是否配置正确。"
-    exit 1
-fi
-
-# 3. 安装 Python 扩展包
-log_and_echo ""
-log_and_echo "=== 3. 安装 Python 扩展包 ==="
+log_and_echo "=== 1. 安装 PIP 扩展包 ==="
 
 PIPprograms=(
     "wget" "configparser" "numpy" "pandas" "pysam" "argparse"
@@ -81,9 +51,9 @@ for prog in "${PIPprograms[@]}"; do
     fi
 done
 
-# 4. 安装 Conda 扩展包
+# 2. 安装 Conda 扩展包
 log_and_echo ""
-log_and_echo "=== 4. 安装 Conda 扩展包 ==="
+log_and_echo "=== 2. 安装 Conda 扩展包 ==="
 
 CONDAprograms=(
     "mosdepth" "sra-tools" "star" "xz" "wget"
@@ -100,9 +70,9 @@ for prog in "${CONDAprograms[@]}"; do
     fi
 done
 
-# 5. 安装 R 语言和扩展包
+# 3. 安装 R 语言和扩展包
 log_and_echo ""
-log_and_echo "=== 5. 安装 R 语言和扩展包 ==="
+log_and_echo "=== 3. 安装 R 语言和扩展包 ==="
 
 log_and_echo "正在安装 R 语言..."
 conda install -c bioconda r-base=3.4.3 -y >> "$LOG_FILE" 2>&1
@@ -143,9 +113,9 @@ else
     log_and_echo "Handy 包安装失败，请检查网络或依赖。"
 fi
 
-# 6. 安装其他程序
+# 4. 安装其他程序
 log_and_echo ""
-log_and_echo "=== 6. 安装其他程序 ==="
+log_and_echo "=== 4. 安装其他程序 ==="
 
 log_and_echo "正在下载 UCSC 工具集..."
 wget http://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/twoBitToFa >> "$LOG_FILE" 2>&1
@@ -158,9 +128,9 @@ else
     log_and_echo "UCSC 工具集下载失败，请检查网络。"
 fi
 
-# 7. 配置环境变量
+# 5. 配置环境变量
 log_and_echo ""
-log_and_echo "=== 7. 配置环境变量 ==="
+log_and_echo "=== 5. 配置环境变量 ==="
 
 SCRIPT_DIR=$(dirname "$0")
 PROJECT_ROOT=$(realpath "$SCRIPT_DIR")
@@ -179,9 +149,9 @@ else
     log_and_echo "环境变量配置失败，请检查 ~/.bashrc 文件权限。"
 fi
 
-# 8. 修改配置文件路径
+# 6. 修改配置文件路径
 log_and_echo ""
-log_and_echo "=== 8. 修改配置文件路径 ==="
+log_and_echo "=== 6. 修改配置文件路径 ==="
 
 CONFIG_FILE="$PROJECT_ROOT/01_polyAseq/configs/program.conf"
 if [ -f "$CONFIG_FILE" ]; then
