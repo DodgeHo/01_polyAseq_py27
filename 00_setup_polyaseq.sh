@@ -14,6 +14,31 @@ echo "  4. 修改项目配置文件路径"
 echo "============================================"
 echo ""
 
+# 0. 初始化 Conda
+echo "=== 0. 初始化 Conda ==="
+
+# 检查 Conda 是否已安装
+if ! command -v conda &> /dev/null; then
+    echo "Conda 未安装，请先安装 Conda。"
+    exit 1
+fi
+
+# 初始化 Conda
+echo "正在初始化 Conda..."
+conda init bash
+if [ $? -eq 0 ]; then
+    echo "Conda 初始化成功。请重新运行脚本以继续。"
+    echo "提示：可以运行以下命令重新加载 Shell 配置："
+    echo "source ~/.bashrc"
+    exit 0
+else
+    echo "Conda 初始化失败，请检查 Conda 是否安装正确。"
+    exit 1
+fi
+
+# 重新加载 Shell 配置
+source ~/.bashrc
+
 # 1. 设置 Conda 环境
 echo "=== 1. 设置 Conda 环境 ==="
 
