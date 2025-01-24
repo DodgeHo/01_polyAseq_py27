@@ -21,30 +21,20 @@ echo -e "${BLUE}  6. 修改项目配置文件路径${NC}"
 echo -e "${BLUE}============================================${NC}"
 echo ""
 
-# 1. 安装 PIP 扩展包
-echo -e "${YELLOW}=== 1. 安装 PIP 扩展包 ===${NC}"
+# 0. 创建conda环境
 
-PIPprograms=(
-    "wget" "configparser" "numpy" "pandas" "pysam" "argparse"
-    "pyfaidx" "Bio" "deeptools" "regex"
-)
+conda env remove -n polya27 # 确保没有同名环境
+conda create -n polya27 python=2.7 -y
+conda activate polya27
+conda config --add channels conda-forge
+conda config --add channels bioconda
 
-for prog in "${PIPprograms[@]}"; do
-    echo -e "${BLUE}正在安装 $prog...${NC}"
-    pip install "$prog"
-    if [ $? -eq 0 ]; then
-        echo -e "${GREEN}$prog 安装成功。${NC}"
-    else
-        echo -e "${RED}$prog 安装失败，请检查网络或依赖。${NC}"
-    fi
-done
 
-# 2. 安装 Conda 扩展包
+# 1. 安装 Conda 扩展包
 echo -e "${YELLOW}=== 2. 安装 Conda 扩展包 ===${NC}"
-
 CONDAprograms=(
     "mosdepth" "sra-tools" "star" "xz" "wget"
-    "samtools" "bowtie2"
+    "samtools" "bowtie2" "regex" "biopython"
 )
 
 for prog in "${CONDAprograms[@]}"; do
@@ -54,6 +44,24 @@ for prog in "${CONDAprograms[@]}"; do
         echo -e "${GREEN}$prog 安装成功。${NC}"
     else
         echo -e "${RED}$prog 安装失败，请检查 Conda 配置。${NC}"
+    fi
+done
+
+# 2. 安装 PIP 扩展包
+echo -e "${YELLOW}=== 1. 安装 PIP 扩展包 ===${NC}"
+
+PIPprograms=(
+    "wget" "configparser" "numpy" "pandas" "pysam" "argparse"
+    "pyfaidx" 
+)
+
+for prog in "${PIPprograms[@]}"; do
+    echo -e "${BLUE}正在安装 $prog...${NC}"
+    pip install "$prog"
+    if [ $? -eq 0 ]; then
+        echo -e "${GREEN}$prog 安装成功。${NC}"
+    else
+        echo -e "${RED}$prog 安装失败，请检查网络或依赖。${NC}"
     fi
 done
 
@@ -151,5 +159,5 @@ fi
 
 echo -e "${BLUE}============================================${NC}"
 echo -e "${GREEN}  环境设置完成！请运行以下命令激活环境：${NC}"
-echo -e "${GREEN}  conda activate bioinfo27${NC}"
+echo -e "${GREEN}  conda activate polya27${NC}"
 echo -e "${BLUE}============================================${NC}"

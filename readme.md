@@ -7,31 +7,18 @@ cd 01_polyAseq_py27 # 进入代码文件夹
 
 # 二、环境与安装
 
-## 1. 安装 Python 2.7、Conda 与 pip（如果尚未安装）
-使用 Python 2.7 运行本软件：
+## 1. 安装 Conda 与 pip（如果尚未安装）
 ```bash
 # 下载 Miniconda（Python 2.7 版本） 赋予执行权限后安装
 wget https://repo.anaconda.com/miniconda/Miniconda2-latest-Linux-x86_64.sh
 chmod +x Miniconda2-latest-Linux-x86_64.sh
 ./Miniconda2-latest-Linux-x86_64.sh -b -f -p /usr/local
 
-# 安装 Python 2.7（如果尚未安装）
-sudo apt install python2
-
 # 安装 pip for Python 2.7（如果尚未安装）
-curl https://bootstrap.pypa.io/pip/2.7/get-pip.py --output get-pip.py
-sudo python2 get-pip.py
+conda install pip
 ```
 
-## 2. 创建并激活conda环境
-
-```bash
-conda env remove -n bioinfo27 # 确保没有同名环境
-conda create -n bioinfo27 python=2.7 -y
-conda activate bioinfo27
-```
-
-## 3. 使用安装脚本安装其他依赖项
+## 2. 使用安装脚本安装其他依赖项
 
 确保当前位于 `01_polyAseq_py27` 文件夹中：
 
