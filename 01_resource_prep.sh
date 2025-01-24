@@ -12,7 +12,7 @@ fi
 hg19_2bit_url="http://hgdownload.cse.ucsc.edu/goldenPath/hg19/bigZips/hg19.2bit"
 
 echo "2. download ucsc hg19 reference file ..."
-twoBitToFa $hg19_2bit_url ${refd}/hg19.fa
+./twoBitToFa $hg19_2bit_url ${refd}/hg19.fa
 
 echo "3. Merging hg19 + phix control ..."
 cat ${refd}/hg19.fa ${refd}/PhiX.fa > ${refd}/hg19_PhiX.fa
