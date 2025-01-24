@@ -33,6 +33,7 @@ bash ./00_setup_polyaseq.sh
 ## 1. 运行脚本 1 准备资源
 
 ```bash
+conda activate polya27 #理论上已经在00_setup_polyaseq.sh中创建
 bash ./01_resource_prep.sh
 ```
 
