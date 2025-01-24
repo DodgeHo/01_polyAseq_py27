@@ -151,7 +151,7 @@ PROJECT_ROOT=$(realpath "$SCRIPT_DIR")
 
 echo -e "${BLUE}项目根目录: $PROJECT_ROOT${NC}"
 export R_UTIL_APA="$PROJECT_ROOT/resource/libs"
-export PADD_GIT="$PROJECT_ROOT/01_polyAseq/paddle-git"
+export PADD_GIT="$PROJECT_ROOT/paddle-git"
 
 echo -e "${BLUE}正在将环境变量写入 ~/.bashrc...${NC}"
 echo "export R_UTIL_APA=$R_UTIL_APA" >> ~/.bashrc
@@ -166,7 +166,7 @@ fi
 # 6. 修改配置文件路径
 echo -e "${YELLOW}=== 6. 修改配置文件路径 ===${NC}"
 
-CONFIG_FILE="$PROJECT_ROOT/01_polyAseq/configs/program.conf"
+CONFIG_FILE="$PROJECT_ROOT/configs/program.conf"
 if [ -f "$CONFIG_FILE" ]; then
     echo -e "${BLUE}正在修改配置文件: $CONFIG_FILE${NC}"
     sed -i "s|~/projects/apa_atingLab2019|$PROJECT_ROOT|g" "$CONFIG_FILE"
