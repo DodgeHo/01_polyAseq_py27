@@ -12,8 +12,9 @@ NC='\033[0m' # No Color
 echo -e "${BLUE}============================================${NC}"
 echo -e "${BLUE}  Bioinfo 环境设置脚本${NC}"
 echo -e "${BLUE}  本脚本将完成以下操作：${NC}"
-echo -e "${BLUE}  1. 安装 PIP 扩展包${NC}"
-echo -e "${BLUE}  2. 安装 Conda 扩展包${NC}"
+echo -e "${BLUE}  0. 创建conda环境polya27"
+echo -e "${BLUE}  1. 安装 conda 扩展包${NC}"
+echo -e "${BLUE}  2. 安装 pip 扩展包${NC}"
 echo -e "${BLUE}  3. 安装 R 语言和扩展包${NC}"
 echo -e "${BLUE}  4. 安装其他程序${NC}"
 echo -e "${BLUE}  5. 配置环境变量${NC}"
@@ -21,38 +22,59 @@ echo -e "${BLUE}  6. 修改项目配置文件路径${NC}"
 echo -e "${BLUE}============================================${NC}"
 echo ""
 
-# 0. 创建conda环境
+echo -e "${YELLOW}=== 0. 创建conda环境polya27 ===${NC}"
 
-conda env remove -n polya27 # 确保没有同名环境
-conda create -n polya27 python=2.7 -y
-conda activate polya27
+# 删除已存在的同名环境
+if conda env remove -n polya27 -y; then
+    echo -e "${GREEN}已删除同名环境polya27。${NC}"
+else
+    echo -e "${YELLOW}未找到同名环境polya27，继续执行。${NC}"
+fi
+# 创建新的conda环境
+if conda create -n polya27 python=2.7 -y; then
+    echo -e "${GREEN}conda环境polya27创建成功。${NC}"
+else
+    echo -e "${YELLOW}conda环境polya27创建失败。${NC}"
+    exit 1
+fi
+
+# 初始化Conda，激活conda环境
+eval "$(conda shell.bash hook)"
+if conda activate polya27; then
+    echo -e "${GREEN}conda环境polya27激活成功。${NC}"
+else
+    echo -e "${YELLOW}conda环境polya27激活失败。${NC}"
+    exit 1
+fi
+# 验证python版本
+python --version
+
+# 添加conda-forge和bioconda频道
 conda config --add channels conda-forge
 conda config --add channels bioconda
-
+echo -e "${GREEN}conda-forge和bioconda频道已添加。${NC}"
 
 # 1. 安装 Conda 扩展包
-echo -e "${YELLOW}=== 2. 安装 Conda 扩展包 ===${NC}"
-CONDAprograms=(
-    "mosdepth" "sra-tools" "star" "xz" "wget"
-    "samtools" "bowtie2" "regex" "biopython"
-)
+echo -e "${YELLOW}=== 1. 安装 Conda 扩展包 ===${NC}"
+echo -e "${BLUE}正在安装所有 Conda 包( mosdepth sra-tools star xz samtools bowtie2 regex biopython pysam pyfaidx argpars)...${NC}"
 
-for prog in "${CONDAprograms[@]}"; do
-    echo -e "${BLUE}正在安装 $prog...${NC}"
-    conda install -c bioconda "$prog" -y
-    if [ $? -eq 0 ]; then
-        echo -e "${GREEN}$prog 安装成功。${NC}"
-    else
-        echo -e "${RED}$prog 安装失败，请检查 Conda 配置。${NC}"
-    fi
-done
+conda install -c bioconda -c conda-forge \
+    mosdepth sra-tools star xz \
+    samtools bowtie2 regex biopython \
+    pysam pyfaidx argparse -y
+
+if [ $? -eq 0 ]; then
+    echo -e "${GREEN}所有 Conda 包安装成功。${NC}"
+else
+    echo -e "${RED}安装失败，请检查 Conda 配置或依赖冲突。${NC}"
+fi
+
 
 # 2. 安装 PIP 扩展包
-echo -e "${YELLOW}=== 1. 安装 PIP 扩展包 ===${NC}"
+echo -e "${YELLOW}=== 2. 安装 PIP 扩展包 ===${NC}"
 
 PIPprograms=(
-    "wget" "configparser" "numpy" "pandas" "pysam" "argparse"
-    "pyfaidx" 
+    "wget" "configparser" "numpy" "pandas" 
 )
 
 for prog in "${PIPprograms[@]}"; do
@@ -61,7 +83,7 @@ for prog in "${PIPprograms[@]}"; do
     if [ $? -eq 0 ]; then
         echo -e "${GREEN}$prog 安装成功。${NC}"
     else
-        echo -e "${RED}$prog 安装失败，请检查网络或依赖。${NC}"
+        echo -e "${RED}$prog 安装失败，请检查网络或pip依赖。${NC}"
     fi
 done
 
@@ -69,7 +91,7 @@ done
 echo -e "${YELLOW}=== 3. 安装 R 语言和扩展包 ===${NC}"
 
 echo -e "${BLUE}正在安装 R 语言...${NC}"
-conda install -c bioconda r-base=3.4.3 -y
+conda install -c bioconda -c r -c conda-forge r-base -y
 if [ $? -eq 0 ]; then
     echo -e "${GREEN}R 语言安装成功。${NC}"
 else
