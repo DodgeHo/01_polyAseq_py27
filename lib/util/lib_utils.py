@@ -586,7 +586,14 @@ def run_syscmd_wrapper(prog_cmd,
 
 	msgout("notice", cmd)
 	if not debug:
-		run_syscmd(cmd, stdout_fn=stdout_fn, stderr_fn=stderr_fn)
+		try:
+			run_syscmd(cmd, stdout_fn=stdout_fn, stderr_fn=stderr_fn)
+		except RuntimeError as e:
+			print(f"Command failed: {e}")
+			if stderr_fn:  # 如果 stderr 被写入文件，读取并打印
+				with open(stderr_fn, 'r') as f:
+					print(f"Stderr output: {f.read()}")
+			raise  # 重新抛出异常
 
 def parse_file_name(fpath):
 

@@ -91,7 +91,7 @@ done
 echo -e "${YELLOW}=== 3. 安装 R 语言和扩展包 ===${NC}"
 
 echo -e "${BLUE}正在安装 R 语言...${NC}"
-conda install -c bioconda -c r -c conda-forge r-base -y
+conda install -c bioconda -c r -c conda-forge "r-base>=3.6.0" -y
 if [ $? -eq 0 ]; then
     echo -e "${GREEN}R 语言安装成功。${NC}"
 else
