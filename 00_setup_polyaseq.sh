@@ -61,7 +61,7 @@ echo -e "${BLUE}正在安装所有 Conda 包( mosdepth sra-tools star xz samtool
 conda install -c bioconda -c conda-forge \
     mosdepth sra-tools star xz \
     samtools bowtie2 regex biopython \
-    pysam pyfaidx argparse -y
+    pysam pyfaidx argparse  r-base=3.6.0 -y
 
 if [ $? -eq 0 ]; then
     echo -e "${GREEN}所有 Conda 包安装成功。${NC}"
@@ -87,17 +87,8 @@ for prog in "${PIPprograms[@]}"; do
     fi
 done
 
-# 3. 安装 R 语言和扩展包
-echo -e "${YELLOW}=== 3. 安装 R 语言和扩展包 ===${NC}"
-
-echo -e "${BLUE}正在安装 R 语言...${NC}"
-conda install -c bioconda -c r -c conda-forge "r-base>=3.6.0" -y
-if [ $? -eq 0 ]; then
-    echo -e "${GREEN}R 语言安装成功。${NC}"
-else
-    echo -e "${RED}R 语言安装失败，请检查 Conda 配置。${NC}"
-    exit 1
-fi
+# 3. 安装 R 语言扩展包
+echo -e "${YELLOW}=== 3. 安装 R 语言扩展包 ===${NC}"
 
 Rprograms=(
     "goldmine" "argparse" "BSgenome.Hsapiens.UCSC.hg19" "corrplot"
